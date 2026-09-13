@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>D,N,X.drawn — chizuvchilar galereyasi</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&family=Work+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --c-0:#051F20;
+    --c-1:#0B2B26;
+    --c-2:#163832;
+    --c-3:#235347;
+    --c-4:#8EB69B;
+    --c-5:#DAF1DE;
+    --text:#DAF1DE;
+    --text-soft:#93b8a3;
+    --line:rgba(218,241,222,0.16);
+    --glass:rgba(11,43,38,0.55);
+    --glass-strong:rgba(22,56,50,0.75);
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:
+      radial-gradient(1100px 700px at 12% -5%, rgba(218,241,222,0.22), transparent 60%),
+      radial-gradient(900px 600px at 100% 100%, rgba(35,83,71,0.35), transparent 60%),
+      linear-gradient(160deg, var(--c-0) 0%, var(--c-1) 38%, var(--c-2) 70%, var(--c-3) 100%);
+    background-attachment:fixed;
+    color:var(--text);
+    font-family:'Work Sans', sans-serif;
+    min-height:100vh;
+    -webkit-user-select:none; -moz-user-select:none; user-select:none;
+  }
+  input, textarea{ -webkit-user-select:text; -moz-user-select:text; user-select:text; }
+  img{ -webkit-user-drag:none; user-drag:none; pointer-events:auto; }
+  .wrap{max-width:1000px;margin:0 auto;padding:30px 20px 90px;}
+  header.site{display:flex;align-items:baseline;justify-content:space-between;flex-wrap:wrap;gap:12px;border-bottom:1px solid var(--line);padding-bottom:18px;margin-bottom:34px;}
+  .brand{display:flex;align-items:center;gap:12px;}
+  .logo-mark{width:42px;height:30px;flex-shrink:0;filter:drop-shadow(0 4px 10px rgba(5,31,32,0.5));}
+  .site h1{font-family:'Playfair Display', serif;font-weight:600;font-size:2rem;margin:0;letter-spacing:-0.01em;color:var(--text);}
+  .site h1 em{font-style:normal;color:var(--c-5);}
+  .user-badge{display:flex;align-items:center;gap:10px;font-size:0.92rem;color:var(--text-soft);}
+  .user-badge b{color:var(--text);cursor:pointer;text-decoration:underline;text-decoration-color:var(--c-4);text-underline-offset:3px;}
+  button, .btn{
+    font-family:'Work Sans', sans-serif;
+    font-size:0.88rem;
+    border:1px solid var(--line);
+    background:linear-gradient(180deg, var(--c-2), var(--c-1));
+    color:var(--text);
+    padding:9px 20px;
+    border-radius:999px;
+    cursor:pointer;
+    transition:transform .15s ease, filter .15s ease, box-shadow .15s ease;
+    box-shadow:0 2px 10px rgba(5,31,32,0.35);
+  }
+  button:hover{transform:translateY(-1px);filter:brightness(1.15);}
+  button.primary{background:linear-gradient(135deg, var(--c-4), var(--c-5));color:var(--c-0);border-color:transparent;font-weight:600;}
+  button.primary:hover{filter:brightness(1.06);}
+  button.ghost{background:transparent;box-shadow:none;}
+  button.small{padding:6px 14px;font-size:0.78rem;}
+  button:disabled{opacity:0.4;cursor:not-allowed;transform:none;filter:none;}
+  nav.tabs{display:flex;gap:10px;margin-bottom:30px;flex-wrap:wrap;}
+  nav.tabs button.active{background:linear-gradient(135deg, var(--c-4), var(--c-5));color:var(--c-0);border-color:transparent;font-weight:600;}
+
+  .card{background:var(--glass-strong);border:1px solid var(--line);border-radius:28px;padding:28px;box-shadow:0 12px 30px rgba(5,31,32,0.35);}
+  .auth-box{max-width:420px;margin:50px auto;}
+  .auth-box h2{font-family:'Playfair Display',serif;font-size:1.5rem;margin-top:0;color:var(--text);}
+  .field{margin-bottom:14px;}
+  .field label{display:block;font-size:0.85rem;color:var(--text-soft);margin-bottom:6px;}
+  .field input{width:100%;padding:11px 16px;border:1px solid var(--line);border-radius:999px;font-family:inherit;font-size:1rem;background:rgba(5,31,32,0.55);color:var(--text);}
+  .field input:focus{outline:none;border-color:var(--c-4);}
+  .auth-switch{margin-top:16px;font-size:0.88rem;color:var(--text-soft);}
+  .auth-switch a{color:var(--c-5);cursor:pointer;font-weight:600;}
+  .msg{font-size:0.85rem;padding:9px 14px;border-radius:14px;margin-bottom:12px;}
+  .msg.error{background:rgba(216,110,74,0.18);color:#f0a98a;}
+
+  .composer h2{font-family:'Playfair Display',serif;font-size:1.3rem;margin-top:0;color:var(--text);}
+  .upload-zone{border:1px dashed var(--c-4);border-radius:24px;padding:26px;text-align:center;color:var(--text-soft);background:rgba(5,31,32,0.35);}
+  .upload-zone img{max-width:100%;max-height:280px;border-radius:18px;margin-top:12px;}
+  textarea#caption{width:100%;margin-top:12px;padding:12px 16px;border:1px solid var(--line);border-radius:20px;font-family:inherit;font-size:0.95rem;resize:vertical;min-height:50px;background:rgba(5,31,32,0.55);color:var(--text);}
+  textarea#caption:focus{outline:none;border-color:var(--c-4);}
+
+  .gallery{display:grid;grid-template-columns:repeat(auto-fill, minmax(280px,1fr));gap:26px;}
+  .frame{background:var(--glass);padding:14px;border-radius:30px;border:1px solid var(--line);box-shadow:0 10px 24px rgba(5,31,32,0.35);}
+  .mat-inner{background:rgba(5,31,32,0.4);padding:10px;border-radius:22px;}
+  .img-wrap{position:relative;overflow:hidden;background:var(--c-1);border-radius:16px;}
+  .img-wrap img{width:100%;display:block;aspect-ratio:1/1;object-fit:cover;}
+  .watermark{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;pointer-events:none;overflow:hidden;}
+  .watermark span{
+    color:rgba(218,241,222,0.35);
+    font-size:0.85rem;
+    font-weight:600;
+    transform:rotate(-30deg);
+    white-space:nowrap;
+    letter-spacing:0.05em;
+    text-shadow:0 0 3px rgba(0,0,0,0.5);
+  }
+  .post-body{padding:16px 8px 4px;display:flex;flex-direction:column;gap:9px;}
+  .post-author{font-size:0.85rem;color:var(--text-soft);}
+  .post-author b{color:var(--text);cursor:pointer;text-decoration:underline;text-decoration-color:var(--c-4);text-underline-offset:2px;}
+  .post-caption{font-size:0.95rem;line-height:1.45;color:var(--text);}
+  .post-actions{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-top:2px;}
+  .like-btn{display:flex;align-items:center;gap:6px;}
+  .like-btn.liked{background:linear-gradient(135deg, var(--c-4), var(--c-5));color:var(--c-0);border-color:transparent;font-weight:600;}
+  .empty{color:var(--text-soft);font-style:italic;padding:30px 0;text-align:center;}
+
+  .comments{margin-top:8px;border-top:1px solid var(--line);padding-top:10px;}
+  .comment{font-size:0.85rem;margin-bottom:7px;line-height:1.4;color:var(--text-soft);}
+  .comment b{color:var(--text);cursor:pointer;text-decoration:underline;text-decoration-color:var(--c-4);text-underline-offset:2px;}
+  .comment-form{display:flex;gap:8px;margin-top:8px;}
+  .comment-form input{flex:1;padding:9px 15px;border:1px solid var(--line);border-radius:999px;font-family:inherit;font-size:0.85rem;background:rgba(5,31,32,0.55);color:var(--text);}
+  .comment-form input:focus{outline:none;border-color:var(--c-4);}
+  .toggle-comments{font-size:0.8rem;color:var(--c-5);cursor:pointer;font-weight:600;margin-top:2px;}
+
+  .profile-head{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:14px;margin-bottom:28px;}
+  .profile-head h2{font-family:'Playfair Display',serif;font-size:1.8rem;margin:0 0 6px 0;color:var(--text);}
+  .stats{display:flex;gap:18px;font-size:0.88rem;color:var(--text-soft);}
+  .stats b{color:var(--text);}
+  .back-link{cursor:pointer;color:var(--c-5);font-weight:600;font-size:0.9rem;margin-bottom:14px;display:inline-block;}
+
+  .privacy-shield{
+    position:fixed;inset:0;
+    background:linear-gradient(160deg, var(--c-0), var(--c-2));
+    z-index:9999;
+    display:none;align-items:center;justify-content:center;
+    font-family:'Playfair Display',serif;font-size:1.2rem;color:var(--text-soft);
+    backdrop-filter: blur(14px);
+  }
+  .privacy-shield.show{display:flex;}
+
+  @media print{
+    body{display:none !important;}
+  }
+</style>
+</head>
+<body oncontextmenu="return false;">
+<div class="privacy-shield" id="shield">Ilova fon rejimida — qaytganda tasvirlar yana ko'rinadi</div>
+<div class="wrap" id="app"></div>
+
+<script>
+// ---------- basic screenshot / copy deterrents ----------
+// Note: no web technology can fully block OS-level screenshots or screen recording.
+// These measures only raise friction and mark content, they don't guarantee prevention.
+document.addEventListener('keydown', (e)=>{
+  const k = e.key.toLowerCase();
+  if((e.ctrlKey || e.metaKey) && (k==='s' || k==='p' || k==='u')) e.preventDefault();
+  if(e.key === 'PrintScreen') e.preventDefault();
+  if((e.ctrlKey && e.shiftKey && (k==='i' || k==='c' || k==='j'))) e.preventDefault();
+  if(e.key === 'F12') e.preventDefault();
+});
+document.addEventListener('dragstart', (e)=>{ if(e.target.tagName==='IMG') e.preventDefault(); });
+const shield = document.getElementById('shield');
+document.addEventListener('visibilitychange', ()=>{
+  shield.classList.toggle('show', document.hidden);
+});
+window.addEventListener('blur', ()=> shield.classList.add('show'));
+window.addEventListener('focus', ()=> shield.classList.remove('show'));
+
+const app = document.getElementById('app');
+let state = {
+  screen: 'loading',
+  authMode: 'login',
+  currentUser: null,
+  tab: 'feed',
+  viewingProfile: null,
+  authError: '',
+  uploadedImage: null,
+  openComments: {},
+  posts: [],
+  users: {},
+};
+
+async function getJSON(key, shared){
+  try{
+    const r = await window.storage.get(key, shared);
+    return r ? JSON.parse(r.value) : null;
+  }catch(e){ return null; }
+}
+async function setJSON(key, value, shared){
+  try{ await window.storage.set(key, JSON.stringify(value), shared); return true; }
+  catch(e){ console.error('storage set failed', e); return false; }
+}
+async function loadAllUsers(){
+  const listRes = await window.storage.list('user:', true);
+  const keys = (listRes && listRes.keys) || [];
+  const users = {};
+  for(const k of keys){ const u = await getJSON(k, true); if(u) users[u.username] = u; }
+  return users;
+}
+async function loadAllPosts(){
+  const listRes = await window.storage.list('post:', true);
+  const keys = (listRes && listRes.keys) || [];
+  const posts = [];
+  for(const k of keys){ const p = await getJSON(k, true); if(p){ if(!p.comments) p.comments=[]; posts.push(p);} }
+  posts.sort((a,b)=>b.createdAt - a.createdAt);
+  return posts;
+}
+async function refreshData(){
+  const [users, posts] = await Promise.all([loadAllUsers(), loadAllPosts()]);
+  state.users = users; state.posts = posts;
+}
+
+async function register(username, password){
+  username = username.trim();
+  if(!username || !password) return 'Foydalanuvchi nomi va parolni kiriting.';
+  if(state.users[username]) return 'Bu nom band, boshqasini tanlang.';
+  const user = {username, password, followers: [], following: [], createdAt: Date.now()};
+  await setJSON('user:'+username, user, true);
+  state.users[username] = user;
+  return null;
+}
+async function login(username, password){
+  username = username.trim();
+  const u = state.users[username];
+  if(!u || u.password !== password) return 'Foydalanuvchi nomi yoki parol xato.';
+  return null;
+}
+async function toggleFollow(target){
+  const me = state.currentUser;
+  if(me === target) return;
+  const meObj = state.users[me], targetObj = state.users[target];
+  if(!meObj || !targetObj) return;
+  const already = meObj.following.includes(target);
+  if(already){
+    meObj.following = meObj.following.filter(u=>u!==target);
+    targetObj.followers = targetObj.followers.filter(u=>u!==me);
+  }else{
+    meObj.following.push(target);
+    targetObj.followers.push(me);
+  }
+  await setJSON('user:'+me, meObj, true);
+  await setJSON('user:'+target, targetObj, true);
+  render();
+}
+async function toggleLike(postId){
+  const post = state.posts.find(p=>p.id===postId);
+  if(!post) return;
+  const me = state.currentUser;
+  const liked = post.likes.includes(me);
+  post.likes = liked ? post.likes.filter(u=>u!==me) : [...post.likes, me];
+  await setJSON('post:'+postId, post, true);
+  render();
+}
+async function addComment(postId, text){
+  text = text.trim();
+  if(!text) return;
+  const post = state.posts.find(p=>p.id===postId);
+  if(!post) return;
+  post.comments.push({author: state.currentUser, text, createdAt: Date.now()});
+  await setJSON('post:'+postId, post, true);
+  render();
+}
+async function createPost(imageData, caption){
+  const id = state.currentUser + '_' + Date.now();
+  const post = {id, author: state.currentUser, image: imageData, caption: caption.trim(), likes: [], comments: [], createdAt: Date.now()};
+  const ok = await setJSON('post:'+id, post, true);
+  if(!ok){
+    showToast("Rasmni saqlashda xatolik yuz berdi. Birozdan so'ng qayta urinib ko'ring.");
+    return;
+  }
+  state.posts.unshift(post);
+  state.uploadedImage = null;
+  state.viewingProfile = null;
+  state.tab = 'profile';
+  render();
+}
+function showConfirm(message){
+  return new Promise(resolve=>{
+    const overlay = h('div',{style:'position:fixed;inset:0;background:rgba(5,31,32,0.7);z-index:10000;display:flex;align-items:center;justify-content:center;padding:20px;'});
+    const box = h('div',{class:'card', style:'max-width:360px;text-align:center;'});
+    box.appendChild(h('div',{style:'margin-bottom:18px;font-size:1rem;line-height:1.4;'}, message));
+    const row = h('div',{style:'display:flex;gap:10px;justify-content:center;'});
+    const yesBtn = h('button',{class:'primary'}, 'Ha, o\'chirish');
+    const noBtn = h('button',{class:'ghost'}, 'Bekor qilish');
+    yesBtn.addEventListener('click', ()=>{ overlay.remove(); resolve(true); });
+    noBtn.addEventListener('click', ()=>{ overlay.remove(); resolve(false); });
+    row.appendChild(noBtn); row.appendChild(yesBtn);
+    box.appendChild(row);
+    overlay.appendChild(box);
+    document.body.appendChild(overlay);
+  });
+}
+function showToast(message){
+  const toast = h('div',{style:'position:fixed;top:20px;left:50%;transform:translateX(-50%);background:var(--c-0);color:var(--text);border:1px solid var(--line);padding:12px 20px;border-radius:999px;z-index:10001;font-size:0.9rem;box-shadow:0 10px 30px rgba(5,31,32,0.5);'}, message);
+  document.body.appendChild(toast);
+  setTimeout(()=>toast.remove(), 3500);
+}
+
+function downloadImage(post){
+  const a = document.createElement('a');
+  a.href = post.image;
+  a.download = post.author + '_' + post.id + '.jpg';
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+}
+async function deletePost(postId){
+  const ok = await showConfirm("Bu rasmni butunlay o'chirmoqchimisiz?");
+  if(!ok) return;
+  let deleted = true;
+  try{
+    await window.storage.delete('post:'+postId, true);
+  }catch(e){ console.error('delete failed', e); deleted = false; }
+  if(!deleted){
+    showToast("O'chirishda xatolik yuz berdi. Qayta urinib ko'ring.");
+    return;
+  }
+  state.posts = state.posts.filter(p=>p.id!==postId);
+  delete state.openComments[postId];
+  render();
+}
+
+function logoMark(){
+  return h('div',{class:'logo-mark', html: `
+    <svg viewBox="0 0 44 32" xmlns="http://www.w3.org/2000/svg">
+      <rect x="10" y="18" width="30" height="12" rx="6" fill="var(--c-2)"/>
+      <rect x="6" y="9" width="30" height="12" rx="6" fill="var(--c-4)"/>
+      <rect x="2" y="0" width="30" height="12" rx="6" fill="var(--c-5)"/>
+    </svg>
+  `});
+}
+
+function h(tag, attrs, ...children){
+  const el = document.createElement(tag);
+  for(const k in (attrs||{})){
+    if(k.startsWith('on')) el.addEventListener(k.slice(2), attrs[k]);
+    else if(k==='html') el.innerHTML = attrs[k];
+    else el.setAttribute(k, attrs[k]);
+  }
+  children.flat().forEach(c=>{ if(c==null) return; el.appendChild((typeof c==='string'||typeof c==='number')?document.createTextNode(String(c)):c); });
+  return el;
+}
+
+function renderAuth(){
+  const box = h('div',{class:'card auth-box'});
+  const title = state.authMode==='login' ? 'Kirish' : "Ro'yxatdan o'tish";
+  box.appendChild(h('h2',{},title));
+  if(state.authError) box.appendChild(h('div',{class:'msg error'}, state.authError));
+  const uInput = h('input',{type:'text', placeholder:'masalan: rassom_ali'});
+  const pInput = h('input',{type:'password', placeholder:'parol'});
+  box.appendChild(h('div',{class:'field'}, h('label',{},'Foydalanuvchi nomi'), uInput));
+  box.appendChild(h('div',{class:'field'}, h('label',{},'Parol'), pInput));
+  const submitBtn = h('button',{class:'primary', style:'width:100%'}, state.authMode==='login' ? 'Kirish' : "Ro'yxatdan o'tish");
+  submitBtn.addEventListener('click', async ()=>{
+    const username = uInput.value, password = pInput.value;
+    submitBtn.disabled = true;
+    let err = state.authMode==='login' ? await login(username,password) : await register(username,password);
+    submitBtn.disabled = false;
+    if(err){ state.authError = err; render(); return; }
+    state.currentUser = username.trim();
+    state.authError = ''; state.screen = 'main'; state.tab = 'feed';
+    render();
+  });
+  box.appendChild(submitBtn);
+  const switchLine = h('div',{class:'auth-switch'});
+  if(state.authMode==='login'){
+    switchLine.appendChild(document.createTextNode("Hisobingiz yo'qmi? "));
+    switchLine.appendChild(h('a',{onclick:()=>{state.authMode='register'; state.authError=''; render();}}, "Ro'yxatdan o'ting"));
+  }else{
+    switchLine.appendChild(document.createTextNode('Hisobingiz bormi? '));
+    switchLine.appendChild(h('a',{onclick:()=>{state.authMode='login'; state.authError=''; render();}}, 'Kiring'));
+  }
+  box.appendChild(switchLine);
+  return box;
+}
+
+function renderTabs(){
+  const nav = h('nav',{class:'tabs'});
+  [['feed','Galereya'],['compose','Rasm joylash'],['profile','Mening sahifam']].forEach(([key,label])=>{
+    const btn = h('button',{class: state.tab===key ? 'active':''}, label);
+    btn.addEventListener('click', ()=>{ state.tab=key; state.viewingProfile=null; render(); });
+    nav.appendChild(btn);
+  });
+  return nav;
+}
+
+function postCard(post, allowDelete){
+  const me = state.currentUser;
+  const liked = post.likes.includes(me);
+  const commentsOpen = !!state.openComments[post.id];
+  const frame = h('div',{class:'frame'});
+  const matInner = h('div',{class:'mat-inner'});
+  const imgWrap = h('div',{class:'img-wrap'});
+  imgWrap.appendChild(h('img',{src: post.image, alt: post.caption || 'rasm', draggable:'false'}));
+  imgWrap.appendChild(h('div',{class:'watermark'}, h('span',{}, '@'+me+' • faqat ko\'rish uchun')));
+  matInner.appendChild(imgWrap);
+  frame.appendChild(matInner);
+
+  const body = h('div',{class:'post-body'});
+  body.appendChild(h('div',{class:'post-author'}, 'Muallif: ', h('b',{onclick:()=>{state.viewingProfile=post.author; state.tab='profile'; render();}}, post.author)));
+  if(post.caption) body.appendChild(h('div',{class:'post-caption'}, post.caption));
+
+  const actions = h('div',{class:'post-actions'});
+  const likeBtn = h('button',{class:'like-btn small'+(liked?' liked':'')}, (liked?'♥':'♡')+' '+post.likes.length);
+  likeBtn.addEventListener('click', ()=>toggleLike(post.id));
+  actions.appendChild(likeBtn);
+  const dlBtn = h('button',{class:'small'}, 'Yuklab olish');
+  dlBtn.addEventListener('click', ()=>downloadImage(post));
+  actions.appendChild(dlBtn);
+  if(allowDelete && post.author === me){
+    const delBtn = h('button',{class:'small ghost', style:'color:#f0a98a;border-color:#f0a98a55;'}, "O'chirish");
+    delBtn.addEventListener('click', ()=>deletePost(post.id));
+    actions.appendChild(delBtn);
+  }
+  body.appendChild(actions);
+
+  const toggle = h('div',{class:'toggle-comments'}, commentsOpen ? 'Izohlarni yashirish' : `Izohlar (${post.comments.length})`);
+  toggle.addEventListener('click', ()=>{ state.openComments[post.id] = !commentsOpen; render(); });
+  body.appendChild(toggle);
+
+  if(commentsOpen){
+    const cWrap = h('div',{class:'comments'});
+    if(post.comments.length===0) cWrap.appendChild(h('div',{class:'comment', style:'font-style:italic;color:var(--ink-soft);'}, 'Hali izoh yo\'q.'));
+    post.comments.forEach(c=>{
+      cWrap.appendChild(h('div',{class:'comment'}, h('b',{onclick:()=>{state.viewingProfile=c.author; state.tab='profile'; render();}}, c.author), ': ', c.text));
+    });
+    const form = h('div',{class:'comment-form'});
+    const input = h('input',{type:'text', placeholder:'Izoh yozing...'});
+    const sendBtn = h('button',{class:'small primary'}, 'Yuborish');
+    sendBtn.addEventListener('click', ()=>{ addComment(post.id, input.value); });
+    input.addEventListener('keydown', (e)=>{ if(e.key==='Enter') addComment(post.id, input.value); });
+    form.appendChild(input); form.appendChild(sendBtn);
+    cWrap.appendChild(form);
+    body.appendChild(cWrap);
+  }
+  frame.appendChild(body);
+  return frame;
+}
+
+function renderFeed(){
+  const wrap = h('div',{});
+  wrap.appendChild(h('h2',{style:'font-family:"Playfair Display",serif;'}, 'Umumiy galereya'));
+  if(state.posts.length===0){
+    wrap.appendChild(h('div',{class:'empty'}, "Hali hech kim rasm joylamagan. Birinchi bo'ling!"));
+  }else{
+    const gal = h('div',{class:'gallery'});
+    state.posts.forEach(p=>gal.appendChild(postCard(p)));
+    wrap.appendChild(gal);
+  }
+  return wrap;
+}
+
+function renderCompose(){
+  const wrap = h('div',{class:'composer'});
+  wrap.appendChild(h('h2',{}, 'Chizgan rasmingizni joylang'));
+  const zone = h('div',{class:'upload-zone'});
+  const fileInput = h('input',{type:'file', accept:'image/*'});
+  zone.appendChild(h('div',{}, 'Rasm faylini tanlang'));
+  zone.appendChild(fileInput);
+  if(state.uploadedImage) zone.appendChild(h('img',{src: state.uploadedImage}));
+  fileInput.addEventListener('change', (e)=>{
+    const file = e.target.files[0];
+    if(!file) return;
+    const reader = new FileReader();
+    reader.onload = ()=>{
+      const img = new Image();
+      img.onload = ()=>{
+        const maxDim = 1000;
+        let w = img.width, hgt = img.height;
+        if(w > maxDim || hgt > maxDim){
+          if(w > hgt){ hgt = Math.round(hgt * (maxDim / w)); w = maxDim; }
+          else { w = Math.round(w * (maxDim / hgt)); hgt = maxDim; }
+        }
+        const canvas = document.createElement('canvas');
+        canvas.width = w; canvas.height = hgt;
+        canvas.getContext('2d').drawImage(img, 0, 0, w, hgt);
+        state.uploadedImage = canvas.toDataURL('image/jpeg', 0.85);
+        render();
+      };
+      img.src = reader.result;
+    };
+    reader.readAsDataURL(file);
+  });
+  wrap.appendChild(zone);
+  const captionArea = h('textarea',{id:'caption', placeholder:'Rasm haqida qisqacha yozing (ixtiyoriy)...'});
+  wrap.appendChild(captionArea);
+  const postBtn = h('button',{class:'primary', style:'margin-top:12px;'}, 'Chop etish');
+  postBtn.disabled = !state.uploadedImage;
+  postBtn.addEventListener('click', async ()=>{
+    if(!state.uploadedImage) return;
+    postBtn.disabled = true;
+    await createPost(state.uploadedImage, captionArea.value);
+  });
+  wrap.appendChild(postBtn);
+  return wrap;
+}
+
+function renderProfile(){
+  const username = state.viewingProfile || state.currentUser;
+  const user = state.users[username];
+  const wrap = h('div',{});
+  if(state.viewingProfile && state.viewingProfile !== state.currentUser){
+    wrap.appendChild(h('span',{class:'back-link', onclick:()=>{state.viewingProfile=null; render();}}, '← Galereyaga qaytish'));
+  }
+  if(!user){ wrap.appendChild(h('div',{class:'empty'}, 'Foydalanuvchi topilmadi.')); return wrap; }
+  const head = h('div',{class:'profile-head'});
+  const left = h('div',{});
+  left.appendChild(h('h2',{}, user.username));
+  left.appendChild(h('div',{class:'stats'},
+    h('span',{}, h('b',{}, user.followers.length), ' obunachi'),
+    h('span',{}, h('b',{}, user.following.length), ' obuna')
+  ));
+  head.appendChild(left);
+  if(username !== state.currentUser){
+    const following = state.users[state.currentUser].following.includes(username);
+    const fBtn = h('button',{class: following ? '' : 'primary'}, following ? 'Obunani bekor qilish' : "Obuna bo'lish");
+    fBtn.addEventListener('click', ()=>toggleFollow(username));
+    head.appendChild(fBtn);
+  }
+  wrap.appendChild(head);
+  const myPosts = state.posts.filter(p=>p.author===username);
+  if(myPosts.length===0){
+    wrap.appendChild(h('div',{class:'empty'}, username===state.currentUser ? "Siz hali hech narsa joylamadingiz." : "Bu foydalanuvchi hali rasm joylamagan."));
+  }else{
+    const gal = h('div',{class:'gallery'});
+    myPosts.forEach(p=>gal.appendChild(postCard(p, username === state.currentUser)));
+    wrap.appendChild(gal);
+  }
+  return wrap;
+}
+
+function render(){
+  app.innerHTML = '';
+  if(state.screen==='loading'){ app.appendChild(h('div',{class:'empty'}, 'Yuklanmoqda...')); return; }
+  if(state.screen==='auth'){
+    app.appendChild(h('header',{class:'site'}, h('div',{class:'brand'}, logoMark(), h('h1',{}, 'D,N,X', h('em',{},'.drawn')))));
+    app.appendChild(renderAuth());
+    return;
+  }
+  const header = h('header',{class:'site'});
+  header.appendChild(h('div',{class:'brand'}, logoMark(), h('h1',{}, 'D,N,X', h('em',{},'.drawn'))));
+  const badge = h('div',{class:'user-badge'}, h('span',{},'Salom, '), h('b',{onclick:()=>{state.tab='profile'; state.viewingProfile=null; render();}}, state.currentUser));
+  const logoutBtn = h('button',{class:'small ghost'}, 'Chiqish');
+  logoutBtn.addEventListener('click', ()=>{ state.currentUser=null; state.screen='auth'; state.authMode='login'; render(); });
+  badge.appendChild(logoutBtn);
+  header.appendChild(badge);
+  app.appendChild(header);
+  app.appendChild(renderTabs());
+  if(state.tab==='feed') app.appendChild(renderFeed());
+  else if(state.tab==='compose') app.appendChild(renderCompose());
+  else if(state.tab==='profile') app.appendChild(renderProfile());
+}
+
+async function init(){
+  await refreshData();
+  state.screen = 'auth';
+  render();
+}
+init();
+</script>
+</body>
+</html>
